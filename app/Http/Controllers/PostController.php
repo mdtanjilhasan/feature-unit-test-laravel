@@ -11,7 +11,11 @@ class PostController extends Controller
 {
     public function index(): \Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Contracts\Foundation\Application
     {
-        $posts = Post::with('user:id,name,email')->select('id', 'user_id', 'title', 'created_at', 'image')->latest()->get();
+        $posts = Post::with('user:id,name,email')
+            ->select('id', 'user_id', 'title', 'created_at', 'image')
+            ->where('user_id', auth()->id())
+            ->latest()
+            ->get();
         return view('admin.post.index', compact('posts'));
     }
 
